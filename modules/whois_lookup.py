@@ -4,7 +4,6 @@ from .utils import (
 )
 
 def run(target: str):
-    # Registra o scan
     thread_id = register_scan("whois")
     
     try:

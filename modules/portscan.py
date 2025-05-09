@@ -3,7 +3,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from .utils import validate_target, scan_port, register_scan, is_scan_cancelled, cleanup_scan, cancel_scan
 
 def run(target: str, port_range: str = "1-1024", threads: int = 10):
-    # Registra o scan
     thread_id = register_scan("port")
     
     try:
@@ -34,23 +33,18 @@ def run(target: str, port_range: str = "1-1024", threads: int = 10):
         open_ports = []
         try:
             with ThreadPoolExecutor(max_workers=effective_threads) as executor:
-                # Criamos um dicionário de futures para permitir cancelamento seletivo
                 futures = {executor.submit(scan_port, target, p, timeout=1.5): p for p in range(start, end + 1)}
                 
-                # Lista para rastrear futures pendentes
                 pending_futures = list(futures.keys())
                 
                 for future in as_completed(futures):
-                    # Verifica o cancelamento frequentemente
                     if is_scan_cancelled():
-                        # Cancela todas as futures pendentes imediatamente
                         for f in pending_futures:
                             if not f.done():
                                 f.cancel()
                         yield "\n[!] Scan cancelado pelo usuário."
                         return
                     
-                    # Remove esta future da lista de pendentes
                     if future in pending_futures:
                         pending_futures.remove(future)
                         

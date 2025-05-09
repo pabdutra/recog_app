@@ -6,7 +6,6 @@ resolver.timeout = 3
 resolver.lifetime = 5
 
 def run(target: str):
-    # Registra o scan
     thread_id = register_scan("dns")
     
     try:

@@ -73,7 +73,6 @@ def load_custom_subdomains(file_path: str) -> list:
         raise ValueError(f"Erro ao ler arquivo de subdomínios: {str(e)}")
 
 def run(target: str, scan_level: str = 'moderate', custom_file: str = None):
-    # Registra o scan
     thread_id = register_scan("subdomain")
     
     try:
