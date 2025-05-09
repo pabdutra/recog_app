@@ -1,1 +1,3 @@
-# recog_app
+# RecogApp
+
+por Pedro Dutra
